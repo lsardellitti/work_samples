@@ -1,0 +1,25 @@
+#version 140
+
+in vec2 textureCoords;
+
+out vec4 out_Colour;
+
+uniform float glowTransition;
+uniform sampler2D colourTexture;
+uniform sampler2D entityDepthTexture;
+uniform sampler2D sceneDepthTexture;
+
+const float contrast = 1.5;
+
+void main(void){
+	
+	out_Colour = texture(colourTexture, textureCoords);
+	
+	float entityDepth = texture(entityDepthTexture, textureCoords).r;
+	float sceneDepth = texture(sceneDepthTexture, textureCoords).r;
+	
+	if (entityDepth == sceneDepth) {
+		out_Colour.r = out_Colour.r*pow(contrast,glowTransition);
+	}
+	
+}
